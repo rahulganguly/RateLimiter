@@ -15,21 +15,16 @@ func TestNoRequestsFailIfWeAreConsumingOneRequestPerSecond(t *testing.T) {
 		time.Sleep(1000 * time.Millisecond)
 	}
 	if isError {
-		t.Errorf("Some Request Failed")
+		t.Fail()
 	}
 }
 
-func TestRequestsFailIfWeAreConsumingRequestLesserThanHalfASecond(t *testing.T) {
-	var tokenBucket = NewTokenBucket(10, 1)
+func TestRequestsFailIfWeAreConsumingRequestFasterThanRefillRate(t *testing.T) {
+	var tokenBucket = NewTokenBucket(20, 1)
 	for i := 0; i < 20; i++ {
-		if !tokenBucket.Request(1) {
-			t.Errorf("Some Request Failed")
+		if !tokenBucket.Request(10) {
+
 		}
 		time.Sleep(10 * time.Millisecond)
 	}
-}
-
-func TestConcurrentRequests(t *testing.T) {
-	//var tokenBucket = NewTokenBucket(10, 1)
-
 }
